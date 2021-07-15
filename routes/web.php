@@ -3,43 +3,41 @@
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
-
-// fake -> 10 records -> categories -> id: 1-10
-// products: category_id: random 1-10
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/admin/users', function () {
+Route::get('admin/users', function () {
     // Lấy ra toàn bộ các bản ghi trong bảng users
     $listUser = DB::table('users')->get();
     return view('admin/users/index', [
         'data' => $listUser,
     ]);
-});
+})->name('admin.users.index');
 
-Route::view('/admin/users/create', 'admin/users/create');
+Route::view('admin/users/create', 'admin/users/create')
+    ->name('admin.users.create');
 
-// TODO: route-name
-Route::post('/admin/users', function () {
-    dd($_REQUEST);
-});
+Route::post('admin/users/store', function () {
 
-// view: trả ra view tương ứng với url
-Route::view('/welcome', 'welcome');
+    return redirect()->route('admin.users.index');
+})->name('admin.users.store');
 
-/*
-- match: mapping url với callback tương ứng, mapping theo nhiều phương thức http đã khai báo
-- any: mapping url với callback tương ứng, mapping với tất cả phương thức http
-*/
+Route::get('admin/users/edit/{id}', function ($id) {
+    $data = DB::table('users')->find($id);
+
+    return view('admin/users/edit', [
+        'data' => $data,
+    ]);
+})->name('admin.users.edit');
+
+Route::post('admin/users/update/{id}', function () {
+    // nhận dữ liệu gửi lên & lưu vào db
+
+    return redirect()->route('admin.users.index');
+})->name('admin.users.update');
+
+Route::post('admin/users/delete/{id}', function () {
+    // xóa dữ liệu theo id
+    return redirect()->route('admin.users.index');
+})->name('admin.users.delete');
