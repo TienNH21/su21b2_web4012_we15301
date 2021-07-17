@@ -63,7 +63,7 @@
 
                                         <form method="POST" action="{{ route('admin.users.delete', [ 'id' => $item->id ]) }}">
                                             @csrf
-                                            <button type="button" class="btn btn-danger">Xóa</button>
+                                            <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
                                     </div>
                                   </div>
