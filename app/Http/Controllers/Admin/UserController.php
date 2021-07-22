@@ -9,14 +9,35 @@ use App\Models\User;
 class UserController extends Controller
 {
     public function index() {
+        // Eager Loading: https://laravel.com/docs/8.x/eloquent-relationships#eager-loading
+        // (N + 1) queries problems
+        // (n + 1) queries -> 2 queries
+
+        /*
+         * Trước khi gọi tới quan hệ trong vòng for
+         * ===> PHẢI DÙNG EAGER LOADING
+         */
+
+        // SELECT * FROM users;
         $listUser = User::all();
+
+        // SELECT * FROM invoices WHERE user_id IN (...);
+        $listUser->load([
+            'invoices',
+        ]);
 
         return view('admin/users/index', [
             'data' => $listUser,
         ]);
     }
 
-    public function show() {
+    public function show($id) {
+        $user = User::find($id);
+        // dd($user);
+
+        return view('admin/users/show', [
+            'user' => $user,
+        ]);
     }
 
     public function create() {

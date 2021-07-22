@@ -19,6 +19,7 @@ Route::group([
         'as' => 'users.',
     ], function () {
         Route::get('/', 'UserController@index')->name('index');
+        Route::get('/{id}', 'UserController@show')->name('show');
         Route::get('create', 'UserController@create')->name('create');
         Route::post('store', 'UserController@store')->name('store');
         Route::get('edit/{id}', 'UserController@edit')->name('edit');

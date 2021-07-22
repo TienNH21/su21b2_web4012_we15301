@@ -22,31 +22,37 @@
                     <td>Name</td>
                     <td>Email</td>
                     <td>Address</td>
+                    <td>Invoice No.</td>
                     <td>Gender</td>
                     <td>Role</td>
                     <td colspan="2">Action</td>
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $item)
+                @foreach ($data as $user)
                     <tr>
-                        <td>{{ $item->id }}</td>
-                        <td>{{ $item->name }}</td>
-                        <td>{{ $item->email }}</td>
-                        <td>{{ $item->address }}</td>
-                        <td>{{ $item->gender == config('common.user.gender.male') ? "Nam" : "Nữ" }}</td>
-                        <td>{{ $item->role == config('common.user.role.user') ? "User" : "Admin" }}</td>
+                        <td>{{ $user->id }}</td>
+                        <td>
+                            <a href="{{ route('admin.users.show', [ 'id' => $user->id ]) }}">
+                                {{ $user->name }}
+                            </a>
+                        </td>
+                        <td>{{ $user->email }}</td>
+                        <td>{{ $user->address }}</td>
+                        <td>{{ $user->invoices->count() }}</td>
+                        <td>{{ $user->gender == config('common.user.gender.male') ? "Nam" : "Nữ" }}</td>
+                        <td>{{ $user->role == config('common.user.role.user') ? "User" : "Admin" }}</td>
                         <td>
                             <a
                                 class="btn btn-primary"
-                                href="{{ route('admin.users.edit', [ 'id' => $item->id ]) }}">
+                                href="{{ route('admin.users.edit', [ 'id' => $user->id ]) }}">
                                 Update
                             </a>
                         </td>
                         <td>
-                            <button class="btn btn-danger" role="button" data-toggle="modal" data-target="#confirm_delete_{{ $item->id }}">Delete</button>
+                            <button class="btn btn-danger" role="button" data-toggle="modal" data-target="#confirm_delete_{{ $user->id }}">Delete</button>
 
-                            <div class="modal fade" id="confirm_delete_{{ $item->id }}" tabindex="-1" role="dialog">
+                            <div class="modal fade" id="confirm_delete_{{ $user->id }}" tabindex="-1" role="dialog">
                                 <div class="modal-dialog" role="document">
                                   <div class="modal-content">
                                     <div class="modal-header">
@@ -61,7 +67,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-                                        <form method="POST" action="{{ route('admin.users.delete', [ 'id' => $item->id ]) }}">
+                                        <form method="POST" action="{{ route('admin.users.delete', [ 'id' => $user->id ]) }}">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
