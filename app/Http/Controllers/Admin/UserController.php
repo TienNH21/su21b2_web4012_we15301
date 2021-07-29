@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Http\Requests\Admin\User\StoreRequest;
+use App\Http\Requests\Admin\User\UpdateRequest;
 
 class UserController extends Controller
 {
@@ -31,9 +33,8 @@ class UserController extends Controller
         ]);
     }
 
-    public function show($id) {
-        $user = User::find($id);
-        // dd($user);
+    public function show(User $user) {
+        // https://laravel.com/docs/8.x/routing#route-model-binding
 
         return view('admin/users/show', [
             'user' => $user,
@@ -44,35 +45,30 @@ class UserController extends Controller
         return view('admin/users/create');
     }
 
-    public function store() {
-        // request()->all(): lấy toàn bộ dữ liệu được gửi lên
-        $data = request()->except('_token');
-        $data['password'] = '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi';
+    // TODO: Upload Image
+    public function store(StoreRequest $request) {
+        $data = $request->except('_token');
 
         $result = User::create($data);
 
         return redirect()->route('admin.users.index');
     }
 
-    public function edit($id) {
-        $data = User::find($id);
-
+    public function edit(User $user) {
         return view('admin/users/edit', [
-            'data' => $data,
+            'data' => $user,
         ]);
     }
 
-    public function update($id) {
+    public function update(UpdateRequest $request, User $user) {
         // nhận dữ liệu gửi lên & lưu vào db
-        $data = request()->except('_token');
-        $user = User::find($id);
+        $data = $request->except('_token');
         $user->update($data);
 
         return redirect()->route('admin.users.index');
     }
 
-    public function delete($id) {
-        $user = User::find($id);
+    public function delete(User $user) {
         $user->delete();
 
         return redirect()->route('admin.users.index');

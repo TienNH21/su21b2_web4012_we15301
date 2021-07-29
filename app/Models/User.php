@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Invoice::class, 'user_id', 'id');
     }
+
+    public function setPasswordAttribute($value) {
+        $hashed = bcrypt($value);
+
+        $this->attributes['password'] = $hashed;
+    }
 }

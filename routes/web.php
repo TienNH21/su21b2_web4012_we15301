@@ -19,12 +19,12 @@ Route::group([
         'as' => 'users.',
     ], function () {
         Route::get('/', 'UserController@index')->name('index');
-        Route::get('/{id}', 'UserController@show')->name('show');
         Route::get('create', 'UserController@create')->name('create');
         Route::post('store', 'UserController@store')->name('store');
-        Route::get('edit/{id}', 'UserController@edit')->name('edit');
-        Route::post('update/{id}', 'UserController@update')->name('update');
-        Route::post('delete/{id}', 'UserController@delete')->name('delete');
+        Route::get('edit/{user}', 'UserController@edit')->name('edit');
+        Route::post('update/{user}', 'UserController@update')->name('update');
+        Route::post('delete/{user}', 'UserController@delete')->name('delete');
+        Route::get('/{user}', 'UserController@show')->name('show');
     });
 
     Route::group([

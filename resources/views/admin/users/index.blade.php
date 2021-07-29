@@ -33,7 +33,7 @@
                     <tr>
                         <td>{{ $user->id }}</td>
                         <td>
-                            <a href="{{ route('admin.users.show', [ 'id' => $user->id ]) }}">
+                            <a href="{{ route('admin.users.show', [ 'user' => $user->id ]) }}">
                                 {{ $user->name }}
                             </a>
                         </td>
@@ -45,7 +45,7 @@
                         <td>
                             <a
                                 class="btn btn-primary"
-                                href="{{ route('admin.users.edit', [ 'id' => $user->id ]) }}">
+                                href="{{ route('admin.users.edit', [ 'user' => $user->id ]) }}">
                                 Update
                             </a>
                         </td>
@@ -67,7 +67,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
 
-                                        <form method="POST" action="{{ route('admin.users.delete', [ 'id' => $user->id ]) }}">
+                                        <form method="POST" action="{{ route('admin.users.delete', [ 'user' => $user->id ]) }}">
                                             @csrf
                                             <button type="submit" class="btn btn-danger">Xóa</button>
                                         </form>
