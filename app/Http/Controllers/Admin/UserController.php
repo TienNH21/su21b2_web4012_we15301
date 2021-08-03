@@ -10,20 +10,16 @@ use App\Http\Requests\Admin\User\UpdateRequest;
 
 class UserController extends Controller
 {
-    public function index() {
-        // Eager Loading: https://laravel.com/docs/8.x/eloquent-relationships#eager-loading
-        // (N + 1) queries problems
-        // (n + 1) queries -> 2 queries
+    public function index(Request $request) {
+        $listUser = null;
+        if ($request->has('keyword') == true) {
+            $keyword = $request->get('keyword');
+            // SELECT * FROM users WHERE email LIKE '%keyword%'
+            $listUser = User::where('email', 'LIKE', "%$keyword%")->get();
+        } else {
+            $listUser = User::all();
+        }
 
-        /*
-         * Trước khi gọi tới quan hệ trong vòng for
-         * ===> PHẢI DÙNG EAGER LOADING
-         */
-
-        // SELECT * FROM users;
-        $listUser = User::all();
-
-        // SELECT * FROM invoices WHERE user_id IN (...);
         $listUser->load([
             'invoices',
         ]);
@@ -48,8 +44,14 @@ class UserController extends Controller
     // TODO: Upload Image
     public function store(StoreRequest $request) {
         $data = $request->except('_token');
-
         $result = User::create($data);
+
+        if ($request->ajax() == true) {
+            return response()->json([
+                'status' => 200,
+                'message' => 'ok'
+            ]);
+        }
 
         return redirect()->route('admin.users.index');
     }

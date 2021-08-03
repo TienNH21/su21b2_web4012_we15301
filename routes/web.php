@@ -8,6 +8,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('login', 'Auth\LoginController@getLoginForm')->name('auth.getLoginForm');
+Route::post('login', 'Auth\LoginController@login')->name('auth.login');
+Route::get('logout', 'Auth\LoginController@logout')->name('auth.logout');
 
 Route::group([
     'prefix' => 'admin',
